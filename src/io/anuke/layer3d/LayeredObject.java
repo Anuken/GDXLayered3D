@@ -30,8 +30,20 @@ public class LayeredObject{
 	}
 	
 	/**Sets the position for the object. 
-	 * @return the object, for chaining.*/
+	 * @return this object, for chaining.*/
 	public LayeredObject setPosition(float x, float y){
 		return setPosition(x,y,z);
+	}
+	
+	/**Adds this object to the list of global layers. 
+	 * @return the object, for chaining.*/
+	public LayeredObject add(){
+		LayeredRenderer.instance().addObject(this);
+		return this;
+	}
+	
+	/**Removes this object from the list of global layers.*/
+	public void remove(){
+		LayeredRenderer.instance().removeObject(this);
 	}
 }
