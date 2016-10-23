@@ -32,6 +32,7 @@ public class LayeredRenderer{
 
 	/** Renders all the texture layers to the batch. */
 	public void render(Batch batch){
+		
 		for(TextureLayer layer : layers){
 			float x = 0, y = layer.getZ();
 			float rotation = layer.object.rotation + baserotation;
@@ -101,7 +102,7 @@ public class LayeredRenderer{
 		}
 
 		public float getZ(){
-			return index * spacing;
+			return object.z + index * spacing;
 		}
 
 		@Override
