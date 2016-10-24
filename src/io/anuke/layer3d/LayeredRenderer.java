@@ -9,12 +9,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class LayeredRenderer{
-	/** Vertical spacing between layers */
-	public static final float spacing = 0.8f;
-	public static final int steps = 2;
-	/**
-	 * The rotation of all the objects in the world. Basically camera rotation.
-	 */
+	/** Vertical spacing between layers. */
+	public static float spacing = 1f;
+	/**Steps per layer. Increase this to reduce rough edges.*/
+	public static int steps = 2;
+	/**The rotation of all the objects in the world. Basically camera rotation. */
 	public float baserotation = 0f;
 	/** The world scale. Higher value to zoom in. */
 	public float worldScale = 1f;
@@ -73,7 +72,7 @@ public class LayeredRenderer{
 				batch.draw(region, x - region.getRegionWidth() / 2, y - region.getRegionHeight() / 2,
 						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(),
 						region.getRegionHeight(), 1, 1, rotation);
-				y += 1f / steps;
+				y += spacing / steps;
 			}
 		}
 	}
