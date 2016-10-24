@@ -1,6 +1,7 @@
 package io.anuke.layer3d;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,11 +11,15 @@ import com.badlogic.gdx.utils.SnapshotArray;
 public class LayeredRenderer{
 	/** Vertical spacing between layers */
 	public static final float spacing = 0.8f;
-	public static final int steps =2;
-	/**The rotation of all the objects in the world. Basically camera rotation.*/
+	public static final int steps = 2;
+	/**
+	 * The rotation of all the objects in the world. Basically camera rotation.
+	 */
 	public float baserotation = 0f;
-	/**The world scale. Higher value to zoom in.*/
+	/** The world scale. Higher value to zoom in. */
 	public float worldScale = 1f;
+	/** Whether or not to draw shadows. Makes the model look more solid. */
+	public boolean drawShadows = true;
 	private static LayeredRenderer instance;
 	private Array<LayeredObject> objects = new Array<LayeredObject>();
 	private SnapshotArray<TextureLayer> layers = new SnapshotArray<TextureLayer>();
@@ -32,34 +37,43 @@ public class LayeredRenderer{
 
 	/** Renders all the texture layers to the batch. */
 	public void render(Batch batch){
-		
+
 		for(TextureLayer layer : layers){
 			float x = 0, y = layer.getZ();
 			float rotation = layer.object.rotation + baserotation;
 			TextureRegion region = layer.object.regions[layer.index];
-			
+
 			float oy = layer.object.y;
 			float ox = layer.object.x;
-			ox -= Gdx.graphics.getWidth()/2 * worldScale;
-			oy -= Gdx.graphics.getHeight()/2  * worldScale;
-			
-			float cos = (float)Math.cos(baserotation * MathUtils.degRad);
-			float sin = (float)Math.sin(baserotation * MathUtils.degRad);
+			ox -= Gdx.graphics.getWidth() / 2 * worldScale;
+			oy -= Gdx.graphics.getHeight() / 2 * worldScale;
+
+			float cos = (float) Math.cos(baserotation * MathUtils.degRad);
+			float sin = (float) Math.sin(baserotation * MathUtils.degRad);
 
 			float newX = ox * cos - oy * sin;
 			float newY = ox * sin + oy * cos;
 
 			ox = newX;
 			oy = newY;
-			
-			x += ox + Gdx.graphics.getWidth()/2 * worldScale;
-			y += oy + Gdx.graphics.getHeight()/2 * worldScale;
-			
+
+			x += ox + Gdx.graphics.getWidth() / 2 * worldScale;
+			y += oy + Gdx.graphics.getHeight() / 2 * worldScale;
+
+			if(drawShadows){
+				batch.setColor(new Color(0, 0, 0, 0.1f));
+				batch.draw(region, x - region.getRegionWidth() / 2, y - region.getRegionHeight() / 2 - spacing,
+						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(),
+						region.getRegionHeight(), 1, 1, rotation);
+
+				batch.setColor(Color.WHITE);
+			}
+
 			for(int i = 0; i < steps; i++){
 				batch.draw(region, x - region.getRegionWidth() / 2, y - region.getRegionHeight() / 2,
 						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(),
 						region.getRegionHeight(), 1, 1, rotation);
-				y += 1f/steps;
+				y += 1f / steps;
 			}
 		}
 	}
