@@ -3,11 +3,19 @@ package io.anuke.layer3d;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import io.anuke.ucore.graphics.Textures;
+
 public class LayeredObject{
 	/**The textureregion layers for this object.*/
 	public final TextureRegion[] regions;
 	/**The position and rotation of the object.*/
 	public float x, y, z, rotation;
+	
+	/**Creatures a layered object from a texture loaded with that name.*/
+	public LayeredObject(String name){
+		TextureRegion region = new TextureRegion(Textures.get("layers/" +name));
+		regions = (region.split(region.getRegionHeight(), region.getRegionHeight())[0]);
+	}
 	
 	/**Creatures a layered object from all the regions.*/
 	public LayeredObject(TextureRegion...regions){
