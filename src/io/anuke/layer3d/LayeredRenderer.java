@@ -8,8 +8,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 public class LayeredRenderer{
-	/** Vertical spacing between layers. */
+	/** Expansion coefficient.*/
 	public static final float e = 0.001f;
+	/** Vertical spacing between layers. */
 	public static float spacing = 1f;
 	/**Steps per layer. Increase this to reduce rough edges.*/
 	public static int steps = 1;
@@ -69,7 +70,7 @@ public class LayeredRenderer{
 				batch.setColor(Color.WHITE);
 			}
 
-			for(int i = 0; i < steps; i++){
+			for(int i = 0; i <= steps; i++){
 				batch.draw(region, x - region.getRegionWidth() / 2 - e, y - region.getRegionHeight() / 2  - e,
 						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth() + e*2,
 						region.getRegionHeight() + e*2, 1, 1, rotation);
