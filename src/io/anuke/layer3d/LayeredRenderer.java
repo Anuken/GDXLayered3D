@@ -18,12 +18,13 @@ public class LayeredRenderer{
 	public float baserotation = 0f;
 	/** The camera to use for rendering.*/
 	public OrthographicCamera camera;
-	/** Whether or not to draw shadows. Makes the model look more solid. */
+	/** Whether or not to draw shadows. Makes the model look more solid, but will affect performance. */
 	public boolean drawShadows = false;
 	private static LayeredRenderer instance;
 	private SnapshotArray<TextureLayer> layers = new SnapshotArray<TextureLayer>();
 	private boolean needsSort;
-
+	
+	/** Returns the instance of the LayeredRenderer*/
 	public static LayeredRenderer instance(){
 		if(instance == null)
 			instance = new LayeredRenderer();
@@ -98,7 +99,7 @@ public class LayeredRenderer{
 		}
 		this.layers.end();
 	}
-
+	
 	static private class TextureLayer implements Comparable<TextureLayer>{
 		final LayeredObject object;
 		final int index;

@@ -2,12 +2,14 @@ package io.anuke.layer3d;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
 import io.anuke.ucore.graphics.Textures;
 
-public class LayeredObject{
-	/**The textureregion layers for this object.*/
-	public final TextureRegion[] regions;
+public class LayeredObject implements Poolable{
+	/**The textureregion layers for this object.
+	 * Modifying these after the object is added will have no effect.*/
+	public TextureRegion[] regions;
 	/**The position and rotation of the object.*/
 	public float x, y, z, rotation;
 	
@@ -46,6 +48,7 @@ public class LayeredObject{
 	/**Adds this object to the list of global layers. 
 	 * @return the object, for chaining.*/
 	public LayeredObject add(){
+		if(regions == null) throw new RuntimeException("The regions are empty, initialize them first!");
 		LayeredRenderer.instance().addObject(this);
 		return this;
 	}
@@ -53,5 +56,12 @@ public class LayeredObject{
 	/**Removes this object from the list of global layers.*/
 	public void remove(){
 		LayeredRenderer.instance().removeObject(this);
+	}
+
+	@Override
+	public void reset(){
+		remove();
+		x = y = z = rotation = 0;
+		regions = null;
 	}
 }
