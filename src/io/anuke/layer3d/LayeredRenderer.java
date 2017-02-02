@@ -10,17 +10,18 @@ import com.badlogic.gdx.utils.SnapshotArray;
 public class LayeredRenderer{
 	/** Expansion coefficient.*/
 	public static final float e = 0.001f;
+	/**Global renderer instance. Use is optional.*/
+	private static LayeredRenderer instance;
 	/** Vertical spacing between layers. */
-	public static float spacing = 1f;
+	public float spacing = 1f;
 	/**Steps per layer. Increase this to reduce rough edges.*/
-	public static int steps = 1;
+	public int steps = 1;
 	/**The rotation of all the objects in the world. Basically camera rotation. */
 	public float baserotation = 0f;
 	/** The camera to use for rendering.*/
 	public OrthographicCamera camera;
 	/** Whether or not to draw shadows. Makes the model look more solid, but will affect performance. */
 	public boolean drawShadows = false;
-	private static LayeredRenderer instance;
 	private SnapshotArray<TextureLayer> layers = new SnapshotArray<TextureLayer>();
 	private boolean needsSort;
 	
@@ -100,9 +101,10 @@ public class LayeredRenderer{
 		this.layers.end();
 	}
 	
-	static private class TextureLayer implements Comparable<TextureLayer>{
+	private class TextureLayer implements Comparable<TextureLayer>{
 		final LayeredObject object;
 		final int index;
+		
 
 		public TextureLayer(LayeredObject object, int index) {
 			this.index = index;
