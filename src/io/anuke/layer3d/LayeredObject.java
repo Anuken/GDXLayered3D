@@ -20,7 +20,7 @@ public class LayeredObject implements Poolable{
 	}
 	
 	/**Creatures a layered object from all the regions.*/
-	public LayeredObject(TextureRegion...regions){
+	public LayeredObject(TextureRegion... regions){
 		this.regions = regions;
 	}
 	

@@ -39,7 +39,10 @@ public class LayeredRenderer{
 
 	/** Renders all the texture layers to the batch. */
 	public void render(Batch batch){
-		if(needsSort) sort();
+		if(needsSort){
+			sort();
+			needsSort = false;
+		}
 
 		for(TextureLayer layer : layers){
 			float x = 0, y = layer.getZ();
