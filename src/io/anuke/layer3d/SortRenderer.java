@@ -7,28 +7,32 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.SnapshotArray;
 
-public class LayeredRenderer{
+/**Default layer renderer implementation. Puts all the layers into one big array and sorts them
+ * This isn't very efficient, but quite flexible.
+ * @author Anuken
+ */
+public class SortRenderer implements LayerRenderer{
 	/** Expansion coefficient.*/
 	public static final float e = 0.001f;
 	/**Global renderer instance. Use is optional.*/
-	private static LayeredRenderer instance;
+	private static SortRenderer instance;
 	/** Vertical spacing between layers. */
 	public float spacing = 1f;
 	/**Steps per layer. Increase this to reduce rough edges.*/
 	public int steps = 1;
-	/**The rotation of all the objects in the world. Basically camera rotation. */
-	public float baserotation = 0f;
+	/**The camera rotation. */
+	public float camrotation = 0f;
 	/** The camera to use for rendering.*/
 	public OrthographicCamera camera;
-	/** Whether or not to draw shadows. Makes the model look more solid, but will affect performance. */
+	/** Whether or not to draw shadows. May make the model look more solid, but will affect performance. */
 	public boolean drawShadows = false;
 	private SnapshotArray<TextureLayer> layers = new SnapshotArray<TextureLayer>();
 	private boolean needsSort;
 	
 	/** Returns the instance of the LayeredRenderer*/
-	public static LayeredRenderer instance(){
+	public static SortRenderer instance(){
 		if(instance == null)
-			instance = new LayeredRenderer();
+			instance = new SortRenderer();
 		return instance;
 	}
 
@@ -46,7 +50,7 @@ public class LayeredRenderer{
 
 		for(TextureLayer layer : layers){
 			float x = 0, y = layer.getZ();
-			float rotation = layer.object.rotation + baserotation;
+			float rotation = layer.object.rotation + camrotation;
 			TextureRegion region = layer.object.regions[layer.index];
 
 			float oy = layer.object.y;
@@ -54,8 +58,8 @@ public class LayeredRenderer{
 			ox -= camera.position.x;
 			oy -= camera.position.y;
 
-			float cos = (float) Math.cos(baserotation * MathUtils.degRad);
-			float sin = (float) Math.sin(baserotation * MathUtils.degRad);
+			float cos = (float) Math.cos(camrotation * MathUtils.degRad);
+			float sin = (float) Math.sin(camrotation * MathUtils.degRad);
 
 			float newX = ox * cos - oy * sin;
 			float newY = ox * sin + oy * cos;
@@ -86,14 +90,14 @@ public class LayeredRenderer{
 	}
 
 	/** Adds an object to the renderer. */
-	public void addObject(LayeredObject object){
+	public void add(LayeredObject object){
 		for(int i = 0; i < object.regions.length; i++)
 			layers.add(new TextureLayer(object, i));
 		needsSort = true;
 	}
 
 	/** Removes an object from the renderer. */
-	public void removeObject(LayeredObject object){
+	public void remove(LayeredObject object){
 		// Removes layers associated with this object.
 		Object[] layers = this.layers.begin();
 		for(Object layer : layers){
@@ -109,7 +113,6 @@ public class LayeredRenderer{
 		final LayeredObject object;
 		final int index;
 		
-
 		public TextureLayer(LayeredObject object, int index) {
 			this.index = index;
 			this.object = object;

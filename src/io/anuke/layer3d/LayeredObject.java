@@ -12,9 +12,10 @@ public class LayeredObject implements Poolable{
 	public TextureRegion[] regions;
 	/**The position and rotation of the object.*/
 	public float x, y, z, rotation;
-	
 	/**The color of the object.*/
 	public Color color = new Color(1,1,1,1);
+	/**Rendering layer offset.*/
+	public int offset = 0;
 	
 	/**Creatures a layered object from all the regions.*/
 	public LayeredObject(TextureRegion... regions){
@@ -51,23 +52,9 @@ public class LayeredObject implements Poolable{
 		color.set(r, g, b, color.a);
 		return this;
 	}
-	
-	/**Adds this object to the list of global layers. 
-	 * @return the object, for chaining.*/
-	public LayeredObject add(){
-		if(regions == null) throw new RuntimeException("The regions are empty, initialize them first!");
-		LayeredRenderer.instance().addObject(this);
-		return this;
-	}
-	
-	/**Removes this object from the list of global layers.*/
-	public void remove(){
-		LayeredRenderer.instance().removeObject(this);
-	}
 
 	@Override
 	public void reset(){
-		remove();
 		x = y = z = rotation = 0;
 		regions = null;
 	}
