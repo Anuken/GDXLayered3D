@@ -4,20 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-import io.anuke.ucore.graphics.Textures;
-
 public class LayeredObject implements Poolable{
 	/**The textureregion layers for this object.
 	 * Modifying these after the object is added will have no effect.*/
 	public TextureRegion[] regions;
 	/**The position and rotation of the object.*/
 	public float x, y, z, rotation;
-	
-	/**Creatures a layered object from a texture loaded with that name.*/
-	public LayeredObject(String name){
-		TextureRegion region = new TextureRegion(Textures.get("layers/" +name));
-		regions = (region.split(region.getRegionHeight(), region.getRegionHeight())[0]);
-	}
 	
 	/**Creatures a layered object from all the regions.*/
 	public LayeredObject(TextureRegion... regions){
