@@ -1,5 +1,7 @@
 package io.anuke.layer3d;
 
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
@@ -10,6 +12,9 @@ public class LayeredObject implements Poolable{
 	public TextureRegion[] regions;
 	/**The position and rotation of the object.*/
 	public float x, y, z, rotation;
+	
+	/**The color of the object.*/
+	public Color color = new Color(1,1,1,1);
 	
 	/**Creatures a layered object from all the regions.*/
 	public LayeredObject(TextureRegion... regions){
@@ -35,6 +40,16 @@ public class LayeredObject implements Poolable{
 	 * @return this object, for chaining.*/
 	public LayeredObject setPosition(float x, float y){
 		return setPosition(x,y,z);
+	}
+	
+	public LayeredObject setColor(float r, float g, float b, float a){
+		color.set(r, g, b, a);
+		return this;
+	}
+	
+	public LayeredObject setColor(float r, float g, float b){
+		color.set(r, g, b, color.a);
+		return this;
 	}
 	
 	/**Adds this object to the list of global layers. 

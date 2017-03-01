@@ -67,7 +67,7 @@ public class LayeredRenderer{
 			y += oy + camera.position.y;
 
 			if(drawShadows){
-				batch.setColor(new Color(0, 0, 0, 0.1f));
+				batch.setColor(0, 0, 0, 0.1f);
 				batch.draw(region, x - region.getRegionWidth() / 2, y - region.getRegionHeight() / 2 - spacing,
 						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(),
 						region.getRegionHeight(), 1, 1, rotation);
@@ -76,6 +76,7 @@ public class LayeredRenderer{
 			}
 
 			for(int i = 0; i <= steps; i++){
+				batch.setColor(layer.object.color);
 				batch.draw(region, x - region.getRegionWidth() / 2 - e, y - region.getRegionHeight() / 2  - e,
 						region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth() + e*2,
 						region.getRegionHeight() + e*2, 1, 1, rotation);
